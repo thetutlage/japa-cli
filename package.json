@@ -1,0 +1,45 @@
+{
+  "name": "japa-cli",
+  "version": "1.0.0",
+  "description": "const japaCli = require('japaCli')",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "amanvirk,adonisjs",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "globby": "^6.1.0"
+  },
+  "devDependencies": {
+    "clear-require": "^2.0.0",
+    "cz-conventional-changelog": "^2.0.0",
+    "japa": "^1.0.1",
+    "pify": "^2.3.0"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thetutlage/japa-cli.git"
+  },
+  "keywords": [
+    "japa",
+    "test-runner",
+    "tests"
+  ],
+  "bugs": {
+    "url": "https://github.com/thetutlage/japa-cli/issues"
+  },
+  "bin": {
+    "japa": "./src/bin.js"
+  },
+  "homepage": "https://github.com/thetutlage/japa-cli#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
