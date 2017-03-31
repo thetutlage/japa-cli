@@ -1,6 +1,6 @@
 # Japa CLI
 
-The CLI runner for [https://github.com/thetutlage/japa](Japa). 
+The CLI runner for [Japa](https://github.com/thetutlage/japa). 
 
 ## Usage
 
