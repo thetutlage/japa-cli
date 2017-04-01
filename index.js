@@ -11,13 +11,13 @@
 */
 
 const program = require('commander')
-const RunCommand = require('./RunCommand')
+const RunCommand = require('./src/RunCommand')
 
 program
-  .version('1.0.0')
-  .option('-b, --bail', 'Exit early when a test fails')
+  .version(require('./package.json').version)
+  .option('-b, --bail [value]', 'Exit early when a test fails')
   .option('-t, --timeout [value]', 'Define global timeout for all the tests')
   .option('-g, --grep [value]', 'Run only specific tests by grepping over test title')
   .parse(process.argv)
 
-new RunCommand(process.cwd(), program.bail, Number(program.timeout), program.grep).run()
+new RunCommand(process.cwd(), program.bail === 'true', Number(program.timeout), program.grep).run()

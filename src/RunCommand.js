@@ -146,7 +146,7 @@ class RunCommand {
     /**
      * Call methods over japa when defined
      */
-    if (this._timeout !== null) { this._japa.timeout(this._timeout) }
+    if (this._timeout !== null && !isNaN(this._timeout)) { this._japa.timeout(this._timeout) }
     if (this._bail !== null) { this._japa.bail(this._bail) }
     if (this._grep) { this._japa.grep(this._grep) }
 
