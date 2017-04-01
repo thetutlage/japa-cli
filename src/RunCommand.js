@@ -11,12 +11,13 @@
 
 const path = require('path')
 const globby = require('globby')
-const japaCli = require('../index')
 const NOT_FOUND = 'MODULE_NOT_FOUND'
 
 class RunCommand {
   constructor (projectRoot, bail = null, timeout = null, grep = null) {
     this._projectRoot = projectRoot
+    this._japa = this._requireJapa()
+    this._japaCli = this._japa.cli
     this._bail = bail
     this._timeout = timeout
     this._grep = grep
@@ -75,8 +76,8 @@ class RunCommand {
    * @private
    */
   _getTestFiles () {
-    const testsGlob = path.join(this._projectRoot, japaCli.testsGlob)
-    const filesToIgnore = japaCli.ignorePattern.map((glob) => `!${path.join(this._projectRoot, glob)}`)
+    const testsGlob = path.join(this._projectRoot, this._japaCli.testsGlob)
+    const filesToIgnore = this._japaCli.ignorePattern.map((glob) => `!${path.join(this._projectRoot, glob)}`)
     return globby([testsGlob].concat(filesToIgnore))
   }
 
@@ -94,10 +95,10 @@ class RunCommand {
    * @private
    */
   _filterFiles (files) {
-    if (typeof (japaCli.filterCallback) !== 'function') {
+    if (typeof (this._japaCli.filterCallback) !== 'function') {
       return files
     }
-    return files.filter((file) => japaCli.filterCallback(file))
+    return files.filter((file) => this._japaCli.filterCallback(file))
   }
 
   /**
@@ -119,7 +120,7 @@ class RunCommand {
        */
       process.on('exit', (code) => {
         if (code === 1) {
-          return reject(new Error('Tests failed'))
+          return reject(new Error('japa-cli: Tests failed'))
         }
         resolve()
       })
@@ -141,14 +142,13 @@ class RunCommand {
    */
   run () {
     this._requireJapaFileIfExists()
-    const japa = this._requireJapa()
 
     /**
      * Call methods over japa when defined
      */
-    if (this._timeout !== null) { japa.timeout(this._timeout) }
-    if (this._bail !== null) { japa.bail(this._bail) }
-    if (this._grep) { japa.grep(this._grep) }
+    if (this._timeout !== null) { this._japa.timeout(this._timeout) }
+    if (this._bail !== null) { this._japa.bail(this._bail) }
+    if (this._grep) { this._japa.grep(this._grep) }
 
     /**
      * Time to get the test files

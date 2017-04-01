@@ -15,7 +15,7 @@
   "devDependencies": {
     "clear-require": "^2.0.0",
     "cz-conventional-changelog": "^2.0.0",
-    "japa": "^1.0.1",
+    "japa": "git+https://github.com/thetutlage/japa.git#develop",
     "pify": "^2.3.0"
   },
   "directories": {
@@ -34,7 +34,7 @@
     "url": "https://github.com/thetutlage/japa-cli/issues"
   },
   "bin": {
-    "japa": "./src/bin.js"
+    "japa": "./index.js"
   },
   "homepage": "https://github.com/thetutlage/japa-cli#readme",
   "config": {
