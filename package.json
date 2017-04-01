@@ -1,7 +1,7 @@
 {
   "name": "japa-cli",
   "version": "1.0.0",
-  "description": "const japaCli = require('japaCli')",
+  "description": "Cli tool for japa test runner",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,7 +15,7 @@
   "devDependencies": {
     "clear-require": "^2.0.0",
     "cz-conventional-changelog": "^2.0.0",
-    "japa": "git+https://github.com/thetutlage/japa.git#develop",
+    "japa": "^1.0.2",
     "pify": "^2.3.0"
   },
   "directories": {
