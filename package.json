@@ -4,7 +4,7 @@
   "description": "Cli tool for japa test runner",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "standard"
   },
   "author": "amanvirk,adonisjs",
   "license": "MIT",
@@ -18,7 +18,8 @@
     "clear-require": "^2.0.0",
     "cz-conventional-changelog": "^2.0.0",
     "japa": "^1.0.2",
-    "pify": "^2.3.0"
+    "pify": "^2.3.0",
+    "standard": "^9.0.2"
   },
   "directories": {
     "test": "test"
