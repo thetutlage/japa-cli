@@ -11,16 +11,54 @@
 
 const path = require('path')
 const globby = require('globby')
+const colors = require('colors')
+const leftPad = require('left-pad')
 const NOT_FOUND = 'MODULE_NOT_FOUND'
 
 class RunCommand {
-  constructor (projectRoot, bail = null, timeout = null, grep = null) {
+  constructor (projectRoot, flags) {
     this._projectRoot = projectRoot
+    this._bail = flags.bail
+    this._timeout = Number(flags.timeout)
+    this._grep = flags.grep
+    this._verbose = flags.verbose
+
+    /**
+     * From the project root.
+     */
     this._japa = this._requireJapa()
-    this._japaCli = this._japa.cli
-    this._bail = bail
-    this._timeout = timeout
-    this._grep = grep
+    this._japaCli = this._requireJapaCli()
+
+    /**
+     * For logging
+     */
+    this._lines = [{
+      key: 'project root',
+      getValue: () => colors.gray(this._projectRoot)
+    }]
+  }
+
+  /**
+   * Prints the log lines when verbose is set
+   * to true.
+   *
+   * @method _printLogLines
+   *
+   * @return {void}
+   *
+   * @private
+   */
+  _printLogLines () {
+    if (!this._verbose) {
+      return
+    }
+
+    const minWidth = 14
+    console.log()
+    this._lines.forEach((line) => {
+      console.log(`${colors.gray(leftPad(line.key, minWidth))} ${colors.gray('::')} ${line.getValue(minWidth)}`)
+    })
+    console.log()
   }
 
   /**
@@ -66,6 +104,26 @@ class RunCommand {
   }
 
   /**
+   * Requires the japa cli file.
+   *
+   * @method _requireJapaCli
+   *
+   * @return {Object}
+   *
+   * @private
+   */
+  _requireJapaCli () {
+    try {
+      return require(path.join(this._projectRoot, 'node_modules/japa/cli'))
+    } catch (error) {
+      if (error.code === NOT_FOUND) {
+        throw new Error('Make sure to install japa before running tests. npm i --save-dev japa')
+      }
+      throw error
+    }
+  }
+
+  /**
    * Require all test files by setting up the proper ignore
    * pattern and passing it to globby
    *
@@ -78,6 +136,23 @@ class RunCommand {
   _getTestFiles () {
     const testsGlob = path.join(this._projectRoot, this._japaCli.testsGlob)
     const filesToIgnore = this._japaCli.ignorePattern.map((glob) => `!${path.join(this._projectRoot, glob)}`)
+
+    /**
+     * Push lines for verbose reporting. It has nothing
+     * to do with the tests flow.
+     */
+    this._lines.push({
+      key: 'test files',
+      getValue: (minWidth) => {
+        const innerLines = [`  ${colors.white(testsGlob)}`]
+          .concat(colors.gray('exclude'))
+          .concat(filesToIgnore.map((line) => `  ${colors.white(line)}`))
+          .map((line) => `${leftPad('', minWidth)}    ${line}`)
+          .join('\n')
+        return `${colors.gray('include')}\n${innerLines}`
+      }
+    })
+
     return globby([testsGlob].concat(filesToIgnore))
   }
 
@@ -113,6 +188,7 @@ class RunCommand {
    * @private
    */
   _runTests (files) {
+    this._printLogLines()
     return new Promise((resolve, reject) => {
       /**
        * Wait for process to exist, since japa will
