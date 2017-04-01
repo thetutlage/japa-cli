@@ -1,0 +1,48 @@
+{
+  "name": "japa-cli",
+  "version": "1.0.0",
+  "description": "Cli tool for japa test runner",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard"
+  },
+  "author": "amanvirk,adonisjs",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "commander": "^2.9.0",
+    "globby": "^6.1.0",
+    "left-pad": "^1.1.3"
+  },
+  "devDependencies": {
+    "clear-require": "^2.0.0",
+    "cz-conventional-changelog": "^2.0.0",
+    "japa": "^1.0.2",
+    "pify": "^2.3.0",
+    "standard": "^9.0.2"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thetutlage/japa-cli.git"
+  },
+  "keywords": [
+    "japa",
+    "test-runner",
+    "tests"
+  ],
+  "bugs": {
+    "url": "https://github.com/thetutlage/japa-cli/issues"
+  },
+  "bin": {
+    "japa": "./index.js"
+  },
+  "homepage": "https://github.com/thetutlage/japa-cli#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
