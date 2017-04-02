@@ -149,7 +149,9 @@ class RunCommand {
       }
     })
 
-    return globby([testsGlob].concat(filesToIgnore))
+    return globby([testsGlob].concat(filesToIgnore), {
+      realpath: true
+    })
   }
 
   /**
