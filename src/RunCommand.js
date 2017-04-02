@@ -23,10 +23,6 @@ class RunCommand {
     this._grep = flags.grep
     this._verbose = flags.verbose
 
-    /**
-     * From the project root.
-     */
-    this._japa = this._requireJapa()
     this._japaCli = this._requireJapaCli()
 
     /**
@@ -191,6 +187,15 @@ class RunCommand {
     this._printLogLines()
     return new Promise((resolve, reject) => {
       /**
+       * Update japa settings before running the
+       * tests
+       */
+      const japa = this._requireJapa()
+      if (this._timeout !== null && !isNaN(this._timeout)) { japa.timeout(this._timeout) }
+      if (this._bail !== null) { japa.bail(this._bail) }
+      if (this._grep) { japa.grep(this._grep) }
+
+      /**
        * Wait for process to exist, since japa will
        * return the tests by itself.
        */
@@ -218,13 +223,6 @@ class RunCommand {
    */
   run () {
     this._requireJapaFileIfExists()
-
-    /**
-     * Call methods over japa when defined
-     */
-    if (this._timeout !== null && !isNaN(this._timeout)) { this._japa.timeout(this._timeout) }
-    if (this._bail !== null) { this._japa.bail(this._bail) }
-    if (this._grep) { this._japa.grep(this._grep) }
 
     /**
      * Time to get the test files
